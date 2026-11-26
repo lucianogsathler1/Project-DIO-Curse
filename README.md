@@ -38,8 +38,9 @@ A arquitetura do projeto aplica três padrões clássicos de desenvolvimento na 
 
 ---
 
+
 ## Como Executar Localmente
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git](https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git)
+   git clone [https://github.com/lucianogsathler1/Project-DIO-Curse] / (https://github.com/lucianogsathler1/Project-DIO-Curse)
