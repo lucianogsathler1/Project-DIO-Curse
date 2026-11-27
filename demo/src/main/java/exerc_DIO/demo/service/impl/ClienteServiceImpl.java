@@ -1,5 +1,6 @@
 package exerc_DIO.demo.service.impl;
 
+import exerc_DIO.demo.exception.ResourceNotFoundException;
 import exerc_DIO.demo.model.Cliente;
 import exerc_DIO.demo.model.ClienteRepository;
 import exerc_DIO.demo.model.Endereco;
@@ -29,7 +30,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente buscaporId(Long id) {
-        return clienteRepository.findById(id).orElse(null);
+        return clienteRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Cliente não encontrado" + id));
     }
 
     @Override
@@ -41,6 +43,7 @@ public class ClienteServiceImpl implements ClienteService {
     public void atualizar(Long id, Cliente cliente) {
         Optional<Cliente> clienteBd = clienteRepository.findById(id);
         if (clienteBd.isPresent()) {
+            cliente.setId(id);
             salvarClienteComCep(cliente);
         }
     }
@@ -56,6 +59,9 @@ public class ClienteServiceImpl implements ClienteService {
         Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
             // Caso não exista, integrar com o ViaCEP e persistir o retorno.
             Endereco novoEndereco = viaCepService.consultarCep(cep);
+            if (novoEndereco == null || novoEndereco.getLogradouro() == null) {
+                throw new IllegalArgumentException("CEP inválido ou não encontrado" + cep);
+            }
             enderecoRepository.save(novoEndereco);
             return novoEndereco;
         });
